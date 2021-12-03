@@ -7,26 +7,18 @@ function TodoItem (props){
       class1 += ' Icon-check--active';
       class2 += ' TodoItem-p--complete'
     }
-    const onComplete=()=>{
-     alert('tendremos completada el ToDo')   
-    }
-
-    const onDelete=()=>{
-        alert('Borraste el ToDo')   
-       }
-
 
     return (
        
         <li className='TodoItem'>
             <span 
             className={class1}
-            onClick={onComplete}
+            onClick={props.onComplete}
             > ✓</span>
             <p  className={class2}>{props.text}</p>
             <span  
             className="Icon Icon-delete"
-            onClick={onDelete}
+            onClick={props.onDelete}
             >X</span>
         </li>
     );
