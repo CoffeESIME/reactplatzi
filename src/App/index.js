@@ -1,13 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { AppUI } from "./AppUI.js";
-const defaultTodos = [
-  { text: "terminar el prototipo de telemetic", completed: false },
-  { text: "Tomar curso" ,completed: false },
-  { text: "llorar con la llorona",completed: true },
-];
+import axios from "axios";
 function App() {
-  const [todos, setTodos]= useState(defaultTodos);
+ const [loading, setLoading]=useState(true);
+ const [error, setError]=useState(false);
+
+  const [todos, setTodos]= useState([]);
+  
   const [searchValue, setSearchValue]=useState('');
+ 
   const completedTodos=todos.filter(todo=> !!todo.completed).length;
   const totalTodos=todos.length;
   let searchedTodos=[];
@@ -23,24 +24,48 @@ function App() {
     })
   }
 
+  useEffect(() => {
+    try {
+      setTimeout(()=>{
+        axios.get(`http://192.168.1.67:4000/todos`)
+        .then(res => {
+          const tareas = res.data;
+        setTodos(tareas)
+        })
+        setLoading(false)
+    } 
+    ,1000)
+    
+  }
+  catch (error) {
+      setError(error)
+  }
+}, [ completedTodos]);
+
+
   const completeTodo=(text)=>{
     const todoIndex= todos.findIndex(todo=>todo.text===text);
     const newTodos=[...todos];
-    newTodos[todoIndex].completed=true;
-    setTodos(newTodos)
+    newTodos[todoIndex].completed='1';
+    setTodos(newTodos);
+
     // todos[todoIndex]= {
     //   text: todos[todoIndex].text,
     // completed:true}
+    axios.post(`http://192.168.1.67:4000/todos/${text}`,{ tarea:newTodos[todoIndex].text, completed: 1});
   }
   const deleteTodo=(text)=>{
     const todoIndex= todos.findIndex(todo=>todo.text===text);
     const newTodos=[...todos];
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos)
+    axios.delete(`http://192.168.1.67:4000/todos/${text}`);
+    setTodos(newTodos);
   }
 
   return (
     <AppUI
+    error={error}
+    loading={loading}
     totalTodos={totalTodos}
     completedTodos={completedTodos}
     searchValue={searchValue}

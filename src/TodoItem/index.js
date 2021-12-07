@@ -3,7 +3,7 @@ import './TodoItem.css'
 function TodoItem (props){
     let class1 = 'Icon Icon-check';
     let class2 = 'TodoItem-p';
-    if (props.completed===true) {
+    if (props.completed==='1') {
       class1 += ' Icon-check--active';
       class2 += ' TodoItem-p--complete'
     }
