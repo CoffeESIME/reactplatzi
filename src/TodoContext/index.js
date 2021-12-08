@@ -10,7 +10,7 @@ function TodoProvider(props) {
   const [todos, setTodos] = useState([]);
 
   const [searchValue, setSearchValue] = useState("");
-
+  const [openModal,setOpenModal ]=useState(false)
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
   const totalTodos = todos.length;
   let searchedTodos = [];
@@ -60,6 +60,21 @@ function TodoProvider(props) {
     axios.delete(`http://192.168.1.67:4000/todos/${text}`);
     setTodos(newTodos);
   };
+  
+  const addTodo=(text)=>{
+    const newTodos=[...todos];
+    newTodos.push({
+      completed: false,
+      text
+    })
+    setTodos(newTodos)
+    axios.post(`http://192.168.1.67:4000/todos`, {
+      tarea: text,
+      completada: 0,
+    });
+  }
+
+
 
   return (
     <TodoContext.Provider
@@ -73,6 +88,9 @@ function TodoProvider(props) {
         searchedTodos,
         completeTodo,
         deleteTodo,
+        addTodo,
+        openModal,
+        setOpenModal
       }}
     >
       {props.children}
