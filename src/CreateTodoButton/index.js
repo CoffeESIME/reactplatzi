@@ -1,17 +1,17 @@
 import React from "react";
 import './CreateTodoButton.css'
-function CreateTodoButton(){
+import {AiFillPlusCircle} from "react-icons/ai";
+ 
+function CreateTodoButton(props){
 
-    const onClickButton=(msg)=>{
-        alert(msg);
+    const onClickButton=()=>{
+        props.setOpenModal(prevState=>!prevState);
     }
     return(
         <button 
-        className='CreateTodoButton'
-        onClick={()=>onClickButton("aparecera modal")}
-        >
-            +
-        </button>
+        className='CreateTodoButton self-center rounded-full h-16 w-16 flex items-center justify-center fixed align-middle	text-center'
+        onClick={onClickButton}
+        ><AiFillPlusCircle color="#5DADE2"/></button>
     );
 }
 
