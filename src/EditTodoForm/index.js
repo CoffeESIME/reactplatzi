@@ -1,35 +1,35 @@
 import React from "react";
 import { TodoContext } from "../TodoContext";
-import './TodoForm.css'
-function TodoForm(){
-    const [newTodoValue, setNewTodoValue]=React.useState('')
+import './TodoFormEdit.css'
+function EditTodoForm(){
+    const [TodoEdit, setTodoEdit]=React.useState('')
     const {
-        addTodo,
-        setOpenModal,
+        setOpenModalEdit,
+        tareaEditar,
+        editTodoText
     }= React.useContext(TodoContext)
 
     const onCancel=()=>{
-        setOpenModal(false);
+        setOpenModalEdit(false);
     }
     const onSubmit=(event)=>{
         event.preventDefault();
-        addTodo(newTodoValue)
-        setOpenModal(false);
-
+        editTodoText(TodoEdit)
+         setOpenModalEdit(false);
     }
 
     const onChange=(event)=>{
-        setNewTodoValue(event.target.value)
+        setTodoEdit(event.target.value)
     }
 
 
 
     return (
         <form onSubmit={onSubmit}>
-            <label>Nueva Tarea</label>
+            <label>Editar {tareaEditar}</label>
             <textarea
-            placeholder="Nueva Tarea"
-            value={newTodoValue}
+            placeholder="Actualizar Tarea"
+            value={TodoEdit}
             onChange={onChange}>
             </textarea>
             <div className="TodoForm-buttonContainer">
@@ -40,10 +40,10 @@ function TodoForm(){
                 <button 
                 className="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
                 type="submit"
-                >Añadir</button>
+                >Terminar</button>
             </div>
         </form>
     );
 }
 
-export {TodoForm}
+export {EditTodoForm}

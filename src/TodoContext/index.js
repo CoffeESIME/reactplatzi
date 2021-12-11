@@ -6,12 +6,13 @@ const TodoContext = React.createContext();
 function TodoProvider(props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
   const [todos, setTodos] = useState([]);
-
   const [searchValue, setSearchValue] = useState("");
-  const [openModal,setOpenModal ]=useState(false)
-  const completedTodos = todos.filter((todo) => !!todo.completed).length;
+  const [openModal,setOpenModal ]=useState(false);
+  const [openModalEdit,setOpenModalEdit ]=useState(false)
+  const [tareaEditar, setTareaEditar]=useState('')
+  const completedTodos = todos.filter((todo) => todo.completed==='1').length;
+  
   const totalTodos = todos.length;
   let searchedTodos = [];
 
@@ -28,23 +29,38 @@ function TodoProvider(props) {
   useEffect(() => {
     try {
       setTimeout(() => {
+        console.log('cuseEffect')
         axios.get(`http://192.168.1.67:4000/todos`).then((res) => {
           const tareas = res.data;
           setTodos(tareas);
         });
         setLoading(false);
-      }, 1000);
+      }, 5000);
     } catch (error) {
       setError(error);
     }
-  }, [completedTodos]);
+  }, [setTodos]);
+
+
+  const volverActual=()=>{
+    try {
+      setLoading(true)
+      setTimeout(() => {
+        axios.get(`http://192.168.1.67:4000/todos`).then((res) => {
+          const tareas = res.data;
+          setTodos(tareas);
+        });
+        setLoading(false);
+      },500);
+    } catch (error) {
+      setError(error);
+    }
+  }
 
   const completeTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
-    newTodos[todoIndex].completed = "1";
-    setTodos(newTodos);
-
+    newTodos[todoIndex].completed = 1;
     // todos[todoIndex]= {
     //   text: todos[todoIndex].text,
     // completed:true}
@@ -52,7 +68,10 @@ function TodoProvider(props) {
       tarea: newTodos[todoIndex].text,
       completed: 1,
     });
+    setTodos(newTodos);
+    volverActual();
   };
+  
   const deleteTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
@@ -73,9 +92,28 @@ function TodoProvider(props) {
       completada: 0,
     });
   }
+  const editTodoText=(text1)=>{
+    const todoIndex = todos.findIndex((todo) => todo.text === tareaEditar);
+    const newTodos = [...todos];
+    newTodos[todoIndex].text = text1;
+    newTodos[todoIndex].completed = 0;
+    setTodos(newTodos);
+    // todos[todoIndex]= {
+    //   text: todos[todoIndex].text,
+    // completed:true}
+sendEdit(newTodos[todoIndex].text)
+  }
+const sendEdit=(text)=>{
 
-
-
+  axios.post(`http://192.168.1.67:4000/todos/update/${tareaEditar}`, {
+    tareaDespues:text,
+    tareaAntes: tareaEditar,
+  });
+}
+  const handleClickEdit=(text)=>{
+    setOpenModalEdit(true);
+    setTareaEditar(text)
+  }
   return (
     <TodoContext.Provider
       value={{
@@ -90,7 +128,12 @@ function TodoProvider(props) {
         deleteTodo,
         addTodo,
         openModal,
-        setOpenModal
+        setOpenModal,
+        openModalEdit,
+        setOpenModalEdit, 
+        handleClickEdit,
+        tareaEditar,
+        editTodoText
       }}
     >
       {props.children}

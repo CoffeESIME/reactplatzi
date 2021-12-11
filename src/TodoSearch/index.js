@@ -8,12 +8,14 @@ function TodoSearch() {
     setSearchValue(event.target.value)
   }
   return (
+    <div className="bg-yellow-400 mx-16">
     <input 
-    className="TodoSearch" 
-    placeholder="búsqueda"
+    className="TodoSearch font-mono border py-2 px-3 bg-yellow-700 mx-16"
+    placeholder="Búsqueda"
     value={searchValue}
     onChange={onSearchValueChange}
     />
+    </div>
   );
 }
 

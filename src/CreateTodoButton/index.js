@@ -1,5 +1,7 @@
 import React from "react";
 import './CreateTodoButton.css'
+import {AiFillPlusCircle} from "react-icons/ai";
+ 
 function CreateTodoButton(props){
 
     const onClickButton=()=>{
@@ -7,11 +9,9 @@ function CreateTodoButton(props){
     }
     return(
         <button 
-        className='CreateTodoButton'
+        className='CreateTodoButton self-center rounded-full h-16 w-16 flex items-center justify-center fixed align-middle	text-center'
         onClick={onClickButton}
-        >
-            +
-        </button>
+        ><AiFillPlusCircle color="#5DADE2"/></button>
     );
 }
 
