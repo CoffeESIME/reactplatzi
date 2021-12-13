@@ -45,11 +45,25 @@ function App() {
       loading={loading}
       searchedTodos={searchedTodos}
       totalTodos={totalTodos}
+      searchValue={searchValue}
       onError={()=><p>Hubo un error</p>}
       onLoading={()=><LoadingTodo/>}
       onEmptyTodos={()=><p className="font-mono text-white text-4xl text-center pt-4 font-black">Crea tu primer todo</p>}
-      onEmptySearch={()=> <p className="font-mono text-white text-4xl text-center pt-4 font-black">Ninguna Tarea coincide con tu busqueda :C</p>}
-      render={(todo) => (
+      onEmptySearch={(search)=> <p className="font-mono text-white text-4xl text-center pt-4 font-black">Ninguna Tarea coincide con tu busqueda {search} :C</p>}
+      // render={(todo) => (
+      //   <TodoItem
+      //     key={todo.text}
+      //     text={todo.text}
+      //     completed={todo.completed}
+      //     completeTodo={() => completeTodo(todo.text)}
+      //     deleteTodo={() => deleteTodo(todo.text)}
+      //     setOpenModalEdit={setOpenModalEdit}
+      //     handleClickEdit={handleClickEdit}
+          
+      //   />
+      // )}
+      >
+        {(todo) => (
         <TodoItem
           key={todo.text}
           text={todo.text}
@@ -61,7 +75,7 @@ function App() {
           
         />
       )}
-      />
+        </TodoList>
     {/* <TodoList 
     loading={loading}
     searchedTodos={searchedTodos}

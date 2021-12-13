@@ -5,15 +5,16 @@ function TodoList(props){
     if (!props.loading && !!props.searchedTodos.length){
         estilo="grid grid-cols-2 justify-around"
     }
+    const renderFunc=props.children || props.render
     return (
         <section>
             <ul className=" mx-16 ">
                 <div className={estilo}> 
                 {props.error && props.onError()}
                 {props.loading &&  props.onLoading()}
-                {!props.loading && !props.searchedTodos.length && !!props.totalTodos && props.onEmptyTodos()}
-                {!props.loading && !props.searchedTodos.length && !props.totalTodos && props.onEmptySearch()}
-                {!props.loading && props.searchedTodos.map(props.render)}
+                {!props.loading && !props.searchedTodos.length && !!props.totalTodos && props.onEmptySearch(props.searchValue)}
+                {!props.loading && !props.searchedTodos.length && !props.totalTodos && props.onEmptyTodos()}
+                {!props.loading && props.searchedTodos.map(renderFunc)}
                 </div>
             </ul>
         </section>
