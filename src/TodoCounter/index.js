@@ -1,8 +1,6 @@
 import React from "react";
-import { TodoContext } from "../TodoContext";
 
-function TodoCounter(){
-const {totalTodos, completedTodos}= React.useContext(TodoContext)
+function TodoCounter({totalTodos, completedTodos}){
     return(
         <div>
             <div className=" font-mono text-white text-4xl text-center pt-4 font-black">

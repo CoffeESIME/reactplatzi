@@ -1,9 +1,8 @@
 import React,{ useState, useEffect } from "react";
 import axios from "axios";
 
-const TodoContext = React.createContext();
 
-function TodoProvider(props) {
+function useTodos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [todos, setTodos] = useState([]);
@@ -30,12 +29,12 @@ function TodoProvider(props) {
     try {
       setTimeout(() => {
         console.log('cuseEffect')
-        axios.get(`http://192.168.1.67:4000/todos`).then((res) => {
+        axios.get(`http://192.168.1.76:4000/todos`).then((res) => {
           const tareas = res.data;
           setTodos(tareas);
         });
         setLoading(false);
-      }, 5000);
+      }, 500);
     } catch (error) {
       setError(error);
     }
@@ -46,7 +45,7 @@ function TodoProvider(props) {
     try {
       setLoading(true)
       setTimeout(() => {
-        axios.get(`http://192.168.1.67:4000/todos`).then((res) => {
+        axios.get(`http://192.168.1.76:4000/todos`).then((res) => {
           const tareas = res.data;
           setTodos(tareas);
         });
@@ -64,7 +63,7 @@ function TodoProvider(props) {
     // todos[todoIndex]= {
     //   text: todos[todoIndex].text,
     // completed:true}
-    axios.post(`http://192.168.1.67:4000/todos/${text}`, {
+    axios.post(`http://192.168.1.76:4000/todos/${text}`, {
       tarea: newTodos[todoIndex].text,
       completed: 1,
     });
@@ -76,7 +75,7 @@ function TodoProvider(props) {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
-    axios.delete(`http://192.168.1.67:4000/todos/${text}`);
+    axios.delete(`http://192.168.1.76:4000/todos/${text}`);
     setTodos(newTodos);
   };
   
@@ -87,7 +86,7 @@ function TodoProvider(props) {
       text
     })
     setTodos(newTodos)
-    axios.post(`http://192.168.1.67:4000/todos`, {
+    axios.post(`http://192.168.1.76:4000/todos`, {
       tarea: text,
       completada: 0,
     });
@@ -105,7 +104,7 @@ sendEdit(newTodos[todoIndex].text)
   }
 const sendEdit=(text)=>{
 
-  axios.post(`http://192.168.1.67:4000/todos/update/${tareaEditar}`, {
+  axios.post(`http://192.168.1.76:4000/todos/update/${tareaEditar}`, {
     tareaDespues:text,
     tareaAntes: tareaEditar,
   });
@@ -115,8 +114,7 @@ const sendEdit=(text)=>{
     setTareaEditar(text)
   }
   return (
-    <TodoContext.Provider
-      value={{
+    {
         error,
         loading,
         totalTodos,
@@ -134,11 +132,8 @@ const sendEdit=(text)=>{
         handleClickEdit,
         tareaEditar,
         editTodoText
-      }}
-    >
-      {props.children}
-    </TodoContext.Provider>
+      }
   );
 }
 
-export {TodoContext, TodoProvider};
+export {useTodos};

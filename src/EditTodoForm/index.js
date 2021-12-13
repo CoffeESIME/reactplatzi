@@ -1,13 +1,11 @@
 import React from "react";
-import { TodoContext } from "../TodoContext";
 import './TodoFormEdit.css'
-function EditTodoForm(){
+function EditTodoForm( {
+    setOpenModalEdit,
+    tareaEditar,
+    editTodoText
+}){
     const [TodoEdit, setTodoEdit]=React.useState('')
-    const {
-        setOpenModalEdit,
-        tareaEditar,
-        editTodoText
-    }= React.useContext(TodoContext)
 
     const onCancel=()=>{
         setOpenModalEdit(false);
