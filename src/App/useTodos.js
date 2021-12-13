@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 
@@ -34,7 +34,7 @@ function useTodos() {
           setTodos(tareas);
         });
         setLoading(false);
-      }, 500);
+      }, 1000);
     } catch (error) {
       setError(error);
     }
